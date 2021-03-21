@@ -46,7 +46,7 @@ symfony serve
    ```dotenv
    DATABASE_URL=mysql://root:root@127.0.0.1:8889/gestyfood?serverVersion=5.7
    ```
-## COMMIT !!
+                                                                    ## COMMIT !!
 
 ##Créer la base de données :
 -[x] Effectué
@@ -73,7 +73,7 @@ php bin/console make:user
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 ```
-## COMMIT !!
+                                                                    ## COMMIT !!
 *************************************************
 # Créer les données de test
 
@@ -90,7 +90,18 @@ php bin/console make:fixtures
 ```
 
 ##Execute les fixtures :
--[] Effectué
+-[x] Effectué
 ```shell script
 php bin/console doctrine:fixtures:load
 ```
+                                                                    ## COMMIT !!
+*************************************************
+
+#mise en place du composant api_platform
+
+##installer le composant Api Platform  :
+-[x] Effectué
+```shell script
+composer require api
+```
+##création  :
