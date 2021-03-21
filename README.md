@@ -104,4 +104,7 @@ php bin/console doctrine:fixtures:load
 ```shell script
 composer require api
 ```
-##création  :
+##création  des composants pour chaque entité et configuration api_platform
+-[x] Effectué
+
+

@@ -2,13 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\UnityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UnityRepository::class)
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"unities_read"}
+ * }
+ * )
  */
 class Unity
 {
@@ -16,42 +25,57 @@ class Unity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"unities_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"unities_read", "residents_read", "hearths_read"})
+     * @Assert\NotBlank(message="Le nom de l'unité est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"unities_read"})
      */
     private $photo;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"unities_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"unities_read"})
      */
     private $UpdateAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"unities_read"})
+     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $createdBy;
 
     /**
      * @ORM\OneToMany(targetEntity=Resident::class, mappedBy="unity", orphanRemoval=true)
+     * @Groups({"unities_read"})
+     * @ApiSubresource
      */
     private $residents;
 
     /**
      * @ORM\ManyToOne(targetEntity=Hearth::class, inversedBy="unities")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"unities_read", "residents_read"})
      */
     private $hearth;
 

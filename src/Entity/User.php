@@ -2,12 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"users_read"}
+ * }
+ * )
+ * @UniqueEntity("email", message="un utilisateur ayant cette adresse existe déjà")
  */
 class User implements UserInterface
 {
@@ -15,62 +25,89 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"users_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"users_read"})
+     * @Assert\NotBlank(message="Email obligatoire")
+     * @Assert\Email(message="Le format de l'adresse email doit être valide")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"users_read"})
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Email obligatoire")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users_read", "hearths_read"})
+     * @Assert\NotBlank(message="prenom de l'user obligatoire")
+     * @Assert\Length(min=2, minMessage="Le prenom de l'user doit faire entre 2 et 255 caractères",
+     *     max=255, maxMessage="Le prenom de l'user doit faire entre 2 et 255 caractères")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users_read", "hearths_read"})
+     * @Assert\NotBlank(message="Nom de l'user obligatoire")
+     * @Assert\Length(min=2, minMessage="Le Nom doit faire entre 2 et 255 caractères",
+     *     max=255, maxMessage="Le Nom doit faire entre 2 et 255 caractères")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users_read"})
+     * @Assert\NotBlank(message="Nom du poste  obligatoire")
+     * @Assert\Length(min=3, minMessage="Le Nom doit faire entre 3 et 255 caractères",
+     *     max=255, maxMessage="Le Nom doit faire entre 3 et 255 caractères")
      */
     private $work;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"users_read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"users_read"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"users_read"})
      */
     private $updateAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users_read"})
+     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $createdBy;
 
     /**
      * @ORM\ManyToOne(targetEntity=Hearth::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=true)
+     * @Groups({"users_read"})
      */
     private $hearth;
 

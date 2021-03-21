@@ -2,13 +2,21 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TextureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TextureRepository::class)
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"textures_read"}
+ * }
+ * )
  */
 class Texture
 {
@@ -16,31 +24,43 @@ class Texture
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"textures_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"textures_read", "residents_read"})
+     * @Assert\NotBlank(message="Nom de la texture  obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom de la texture doit faire entre 3 et 255 caractères",
+     *     max=255, maxMessage="Le nom de la texture doit faire entre 3 et 255 caractères")
      */
     private $name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"textures_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"textures_read"})
      */
     private $updateAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"textures_read"})
+     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $createdBy;
 
     /**
      * @ORM\ManyToMany(targetEntity=Resident::class, inversedBy="textures")
+     * @Groups({"textures_read"})
      */
     private $resident;
 

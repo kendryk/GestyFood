@@ -2,11 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DayCheckRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=DayCheckRepository::class)
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"dayChecks_read"}
+ * }
+ * )
  */
 class DayCheck
 {
@@ -14,42 +22,62 @@ class DayCheck
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"dayChecks_read"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=80)
+     * @Groups({"dayChecks_read", "residents_read"})
+     * @Assert\NotBlank(message="Le nom de de la journée est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=80)
+     * @Groups({"dayChecks_read", "residents_read"})
+     * @Assert\NotBlank(message="Le choix doit etre renseigné")
+     * @Assert\Choice(choices={"matin/midi/soir", "matin/midi", "matin/soir", "midi/soir", "matin", "midi", "soir"},
+     *     message="Le choix doit etre matin/midi/soir, matin/midi, matin/soir, midi/soir, matin, midi, soir")
      */
     private $checkTime;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"dayChecks_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"dayChecks_read"})
      */
     private $updateAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"dayChecks_read"})
+     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $createdBy;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"dayChecks_read"})
+     * @Assert\NotBlank(message="Le nom de de la semaine est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $week;
 
     /**
      * @ORM\ManyToOne(targetEntity=Resident::class, inversedBy="dayChecks")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"dayChecks_read"})
      */
     private $resident;
 

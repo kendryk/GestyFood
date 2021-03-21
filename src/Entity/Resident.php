@@ -2,13 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\ResidentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ResidentRepository::class)
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups"={"residents_read"}
+ * }
+ * )
  */
 class Resident
 {
@@ -16,62 +25,87 @@ class Resident
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"residents_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"residents_read", "unities_read", "diets_read", "textures_read"})
+     * @Assert\NotBlank(message="Le prénom du Résident est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le prénom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le prénom doit faire entre 3 et 255 caractères")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"residents_read", "unities_read", "diets_read", "textures_read"})
+     * @Assert\NotBlank(message="Le nom du Résident est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *     max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"residents_read", "unities_read", "diets_read", "textures_read"})
+     * @Assert\NotBlank(message="le numéro de sa chambre est obligatoire")
      */
     private $room;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"residents_read"})
+     * @Assert\NotBlank(message="date de naissance  obligatoire")
      */
     private $bornAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"residents_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"residents_read"})
      */
     private $updateAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"residents_read"})
+     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
+     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
+     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
      */
     private $createdBy;
 
     /**
      * @ORM\ManyToOne(targetEntity=Unity::class, inversedBy="residents")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"residents_read"})
+     * @Assert\NotBlank(message="emplacement d'unité  obligatoire")
      */
     private $unity;
 
     /**
      * @ORM\ManyToMany(targetEntity=Diet::class, mappedBy="resident")
+     * @Groups({"residents_read"})
      */
     private $diets;
 
     /**
      * @ORM\ManyToMany(targetEntity=Texture::class, mappedBy="resident")
+     * @Groups({"residents_read"})
      */
     private $textures;
 
     /**
      * @ORM\OneToMany(targetEntity=DayCheck::class, mappedBy="resident", orphanRemoval=true)
+     * @Groups({"residents_read"})
+     * @ApiSubresource
      */
     private $dayChecks;
 
