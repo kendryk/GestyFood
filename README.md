@@ -49,26 +49,26 @@ symfony serve
 ## COMMIT !!
 
 ##Créer la base de données :
--[] Effectué
+-[x] Effectué
 ```shell script
 php bin/console doctrine:database:create
 ```
 
 ##Créer les entités Doctrine :
--[] Effectué
+-[x] Effectué
 ```shell script
 php bin/console make:entity
 ```
 
 ##SAUF POUR L'ENTITE User :
--[] Effectué
+-[x] Effectué
 ```shell script
 composer req security
 php bin/console make:user
 ```
 
 ##Créer le fichier de migration puis l'exécuter :
--[] Effectué
+-[x] Effectué
 ```shell script
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate
