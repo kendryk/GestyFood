@@ -107,4 +107,55 @@ composer require api
 ##création  des composants pour chaque entité et configuration api_platform
 -[x] Effectué
 
+                                                                   ## COMMIT !!
+*************************************************
 
+#mise en place du Jwt Authentication
+https://github.com/lexik/LexikJWTAuthenticationBundle/blob/master/Resources/doc/index.md#getting-started
+
+##installer Jwt Authentication  :
+-[x] Effectué
+```shell script
+composer require "lexik/jwt-authentication-bundle"
+```
+##verifier si on a openssl
+-[x] Effectué
+
+###Generate the SSL keys:
+-[x] Effectué
+```shell script
+php bin/console lexik:jwt:generate-keypair
+```
+### Configure the SSL keys path in config/packages/lexik_jwt_authentication.yaml
+-[x] Effectué
+```shell script
+security:
+    # ...
+    
+    firewalls:
+
+        login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:               /api/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+    access_control:
+        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+```
+###Configure your routing into config/routes.yaml :
+```shell script
+api_login_check:
+    path: /api/login_check
+```

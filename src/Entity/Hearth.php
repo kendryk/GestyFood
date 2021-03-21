@@ -97,7 +97,7 @@ class Hearth
     private $unities;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="hearth")
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="hearth", orphanRemoval=true)
      * @Groups({"hearths_read"})
      */
     private $users;
