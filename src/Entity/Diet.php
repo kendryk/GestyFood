@@ -49,20 +49,19 @@ class Diet
      */
     private $UpdateAt;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"diets_read"})
-     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
-     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
-     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
-     */
-    private $createdBy;
 
     /**
      * @ORM\ManyToMany(targetEntity=Resident::class, inversedBy="diets")
      * @Groups({"diets_read"})
      */
     private $resident;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="diets")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"diets_read"})
+     */
+    private $createdBy;
 
     public function __construct()
     {
@@ -110,17 +109,7 @@ class Diet
         return $this;
     }
 
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
 
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Resident[]
@@ -142,6 +131,18 @@ class Diet
     public function removeResident(Resident $resident): self
     {
         $this->resident->removeElement($resident);
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

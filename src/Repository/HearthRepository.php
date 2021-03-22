@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Hearth;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,8 @@ class HearthRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Hearth::class);
     }
+
+
 
     // /**
     //  * @return Hearth[] Returns an array of Hearth objects

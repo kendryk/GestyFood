@@ -16,7 +16,7 @@ class DietFixtures extends Fixture
             $diet->setName("Regime-".$i);
             $diet->setCreatedAt(new\DateTime("2021/04/2".$i));
             $diet->setUpdateAt(new\DateTime("2021/04/2".$i));
-            $diet->setCreatedBy("director");
+            $diet->setCreatedBy($this->getReference('user-director-1'));
             $this->addReference("Regime-".$i, $diet);
 
             $manager->persist($diet);

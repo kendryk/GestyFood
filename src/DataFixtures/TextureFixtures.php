@@ -18,7 +18,7 @@ class TextureFixtures extends Fixture
                 $texture->setName("texture-".$i);
                 $texture->setCreatedAt(new\DateTime("2021/04/2".$i));
                 $texture->setUpdateAt(new\DateTime("2021/04/2".$i));
-                $texture->setCreatedBy("director");
+                $texture->setCreatedBy($this->getReference('user-director-1'));
 
                 $this->addReference("texture-".$i, $texture);
                 $manager->persist($texture);

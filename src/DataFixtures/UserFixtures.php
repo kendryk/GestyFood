@@ -21,7 +21,6 @@ class UserFixtures extends Fixture
         $this->encoder = $encoder;
     }
 
-
     public function load(ObjectManager $manager)
     {
         //************ROLE_ADMIN*****************
@@ -33,15 +32,17 @@ class UserFixtures extends Fixture
         $admin->setWork("admin");
         $admin->setCreatedAt(new\DateTime("2021/04/22"));
         $admin->setUpdateAt(new\DateTime("2021/04/22"));
-        $admin->setCreatedBy("admin");
-
-
         $admin->setRoles(["ROLE_ADMIN"]);
         $password = $this->encoder->encodePassword($admin,"admin");
         $admin->setPassword($password);
 
-        $manager->persist($admin);
         $this->addReference("user-admin",$admin);
+
+        $manager->persist($admin);
+
+
+
+
 
         //************ROLE_DIRECTOR*****************
         for($i=1; $i< 4; $i++) {
@@ -53,14 +54,13 @@ class UserFixtures extends Fixture
             $director->setWork("director-".$i);
             $director->setCreatedAt(new\DateTime("2021/04/22"));
             $director->setUpdateAt(new\DateTime("2021/04/22"));
-            $director->setCreatedBy("director-".$i);
-            $director->setHearth($this->getReference("Foyer-".$i));
             $director->setRoles(["ROLE_DIRECTOR"]);
             $password = $this->encoder->encodePassword($director, "director-".$i);
             $director->setPassword($password);
 
             $manager->persist($director);
             $this->addReference("user-director-".$i, $director);
+
         }
 
 
@@ -72,14 +72,13 @@ class UserFixtures extends Fixture
         $moderateur->setWork("moderateur");
         $moderateur->setCreatedAt(new\DateTime("2021/04/22"));
         $moderateur->setUpdateAt(new\DateTime("2021/04/22"));
-        $moderateur->setHearth($this->getReference("Foyer-1"));
-        $moderateur->setCreatedBy("director-1");
         $moderateur->setRoles(["ROLE_MODERATOR"]);
         $password = $this->encoder->encodePassword($moderateur,"root");
         $moderateur->setPassword($password);
 
         $manager->persist($moderateur);
         $this->addReference("moderateur",$moderateur);
+
 
         //************ROLE_EDITOR*****************
         $editor = new User();
@@ -89,14 +88,14 @@ class UserFixtures extends Fixture
         $editor->setWork("editor");
         $editor->setCreatedAt(new\DateTime("2021/04/22"));
         $editor->setUpdateAt(new\DateTime("2021/04/22"));
-        $editor->setHearth($this->getReference("Foyer-1"));
-        $editor->setCreatedBy("director-1");
         $editor->setRoles(["ROLE_EDITOR"]);
         $password = $this->encoder->encodePassword($editor,"root");
         $editor->setPassword($password);
 
         $manager->persist($editor);
         $this->addReference("editor",$editor);
+
+
 
         //************ROLE_USER*****************
         $user = new User();
@@ -106,8 +105,6 @@ class UserFixtures extends Fixture
         $user->setWork("user");
         $user->setCreatedAt(new\DateTime("2021/04/22"));
         $user->setUpdateAt(new\DateTime("2021/04/22"));
-        $user->setHearth($this->getReference("Foyer-1"));
-        $user->setCreatedBy("director-1");
         $user->setRoles(["ROLE_USER"]);
         $password = $this->encoder->encodePassword($user,"root");
         $user->setPassword($password);

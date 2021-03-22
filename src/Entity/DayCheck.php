@@ -56,14 +56,7 @@ class DayCheck
      */
     private $updateAt;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"dayChecks_read"})
-     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
-     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
-     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
-     */
-    private $createdBy;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -80,6 +73,13 @@ class DayCheck
      * @Groups({"dayChecks_read"})
      */
     private $resident;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="dayChecks")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"dayChecks_read"})
+     */
+    private $createdBy;
 
     public function getId(): ?int
     {
@@ -134,17 +134,7 @@ class DayCheck
         return $this;
     }
 
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
 
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
 
     public function getWeek(): ?string
     {
@@ -166,6 +156,18 @@ class DayCheck
     public function setResident(?Resident $resident): self
     {
         $this->resident = $resident;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

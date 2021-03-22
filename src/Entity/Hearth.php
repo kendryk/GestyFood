@@ -81,14 +81,6 @@ class Hearth
      */
     private $updateAt;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"hearths_read"})
-     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
-     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
-     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
-     */
-    private $createdBy;
 
     /**
      * @ORM\OneToMany(targetEntity=Unity::class, mappedBy="hearth", orphanRemoval=true)
@@ -101,6 +93,13 @@ class Hearth
      * @Groups({"hearths_read"})
      */
     private $users;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="hearths")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"hearths_read"})
+     */
+    private $createdBy;
 
     public function __construct()
     {
@@ -197,17 +196,7 @@ class Hearth
         return $this;
     }
 
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
 
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Unity[]
@@ -268,4 +257,20 @@ class Hearth
 
         return $this;
     }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+
+
+
 }

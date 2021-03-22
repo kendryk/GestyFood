@@ -56,14 +56,7 @@ class Unity
      */
     private $UpdateAt;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"unities_read"})
-     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
-     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
-     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
-     */
-    private $createdBy;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Resident::class, mappedBy="unity", orphanRemoval=true)
@@ -78,6 +71,13 @@ class Unity
      * @Groups({"unities_read", "residents_read"})
      */
     private $hearth;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="unities")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"unities_read"})
+     */
+    private $createdBy;
 
     public function __construct()
     {
@@ -137,17 +137,6 @@ class Unity
         return $this;
     }
 
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Resident[]
@@ -187,6 +176,18 @@ class Unity
     public function setHearth(?Hearth $hearth): self
     {
         $this->hearth = $hearth;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

@@ -22,7 +22,7 @@ class UnityFixtures extends Fixture implements DependentFixtureInterface
                 $unit->setCreatedAt(new\DateTime("2021/04/2".$j));
                 $unit->setUpdateAt(new\DateTime("2021/04/2".$j));
                 $unit->setHearth($this->getReference("Foyer-".$i));
-                $unit->setCreatedBy("director");
+                $unit->setCreatedBy($this->getReference('user-director-1'));
                 $manager->persist( $unit);
 
                 $this->addReference("Unit-".$j."/Foyer-".$i,$unit);

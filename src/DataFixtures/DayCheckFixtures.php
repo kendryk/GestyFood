@@ -25,7 +25,7 @@ class DayCheckFixtures extends Fixture implements DependentFixtureInterface
                         $dayCheck->setResident($this->getReference("Resident-" . $j . "/Unit-" . $i . "/Foyer-" . $f));
                         $dayCheck->setCreatedAt(new\DateTime("2021/04/2".$i));
                         $dayCheck->setUpdateAt(new\DateTime("2021/04/2".$i));
-                        $dayCheck->setCreatedBy('director-1');
+                        $dayCheck->setCreatedBy($this->getReference('user-director-1'));
                         $dayCheck->setWeek('Semaine-1');
                         $manager->persist($dayCheck);
                         $this->addReference($jour."/Resident-" . $j . "/Unit-" . $i . "/Foyer-" . $f, $dayCheck);

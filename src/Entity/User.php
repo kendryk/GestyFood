@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -95,14 +97,6 @@ class User implements UserInterface
      */
     private $updateAt;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"users_read"})
-     * @Assert\NotBlank(message="Le nom du createur est obligatoire")
-     * @Assert\Length(min=3, minMessage="Le nom doit faire entre 3 et 255 caractères",
-     *      max=255, maxMessage="Le nom doit faire entre 3 et 255 caractères")
-     */
-    private $createdBy;
 
     /**
      * @ORM\ManyToOne(targetEntity=Hearth::class, inversedBy="users")
@@ -110,6 +104,53 @@ class User implements UserInterface
      * @Groups({"users_read"})
      */
     private $hearth;
+
+    /**
+     * @ORM\OneToMany(targetEntity=DayCheck::class, mappedBy="createdBy", orphanRemoval=true)
+     */
+    private $dayChecks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Diet::class, mappedBy="createdBy", orphanRemoval=true)
+     */
+    private $diets;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Hearth::class, mappedBy="createdBy")
+     */
+    private $hearths;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Resident::class, mappedBy="createdBy", orphanRemoval=true)
+     */
+    private $residents;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Texture::class, mappedBy="createdBy", orphanRemoval=true)
+     */
+    private $textures;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Unity::class, mappedBy="createdBy", orphanRemoval=true)
+     */
+    private $unities;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="createdBy", orphanRemoval=true)
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->dayChecks = new ArrayCollection();
+        $this->diets = new ArrayCollection();
+        $this->hearths = new ArrayCollection();
+        $this->residents = new ArrayCollection();
+        $this->textures = new ArrayCollection();
+        $this->unities = new ArrayCollection();
+
+    }
 
     public function getId(): ?int
     {
@@ -264,17 +305,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(string $createdBy): self
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
 
     public function getHearth(): ?Hearth
     {
@@ -287,4 +317,78 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|DayCheck[]
+     */
+    public function getDayChecks(): Collection
+    {
+        return $this->dayChecks;
+    }
+
+
+
+    /**
+     * @return Collection|Diet[]
+     */
+    public function getDiets(): Collection
+    {
+        return $this->diets;
+    }
+
+
+    /**
+     * @return Collection|Hearth[]
+     */
+    public function getHearths(): Collection
+    {
+        return $this->hearths;
+    }
+
+
+
+    /**
+     * @return Collection|Resident[]
+     */
+    public function getResidents(): Collection
+    {
+        return $this->residents;
+    }
+
+
+
+    /**
+     * @return Collection|Texture[]
+     */
+    public function getTextures(): Collection
+    {
+        return $this->textures;
+    }
+
+
+
+
+
+    /**
+     * @return Collection|Unity[]
+     */
+    public function getUnities(): Collection
+    {
+        return $this->unities;
+    }
+
+
+
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+
+
+
 }
