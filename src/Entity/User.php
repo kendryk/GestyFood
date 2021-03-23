@@ -97,7 +97,6 @@ class User implements UserInterface
      */
     private $updateAt;
 
-
     /**
      * @ORM\ManyToOne(targetEntity=Hearth::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
@@ -135,11 +134,6 @@ class User implements UserInterface
      */
     private $unities;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="createdBy", orphanRemoval=true)
-     */
-    private $users;
 
     public function __construct()
     {
@@ -336,7 +330,6 @@ class User implements UserInterface
         return $this->diets;
     }
 
-
     /**
      * @return Collection|Hearth[]
      */
@@ -344,8 +337,6 @@ class User implements UserInterface
     {
         return $this->hearths;
     }
-
-
 
     /**
      * @return Collection|Resident[]
@@ -355,8 +346,6 @@ class User implements UserInterface
         return $this->residents;
     }
 
-
-
     /**
      * @return Collection|Texture[]
      */
@@ -364,10 +353,6 @@ class User implements UserInterface
     {
         return $this->textures;
     }
-
-
-
-
 
     /**
      * @return Collection|Unity[]
@@ -378,15 +363,6 @@ class User implements UserInterface
     }
 
 
-
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
 
 
 
