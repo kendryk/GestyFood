@@ -155,7 +155,18 @@ security:
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
 ```
 ###Configure your routing into config/routes.yaml :
+-[x] Effectué
 ```shell script
 api_login_check:
     path: /api/login_check
 ```
+                                                                  ## COMMIT !!
+*************************************************
+###mise en place d'event pour securisé l'acces a certaine donnée par recuperation d"evenement :
+dossier CurrentUserSession
+-[x] Effectué
+                                                                  ## COMMIT !!
+*************************************************
+###mise en place doctrine pour securisé l'acces a certaine donnée :
+dossier CurrentUserSession
+-[x] Effectué
